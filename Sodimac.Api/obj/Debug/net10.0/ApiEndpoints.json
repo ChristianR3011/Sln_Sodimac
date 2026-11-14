@@ -1,0 +1,209 @@
+[
+  {
+    "ContainingType": "Sodimac.Api.Controllers.CheckoutController",
+    "Method": "RegistrarComprobante",
+    "RelativePath": "api/Checkout/comprobante",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Sodimac.Api.Dtos.RegistrarComprobanteRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Sodimac.Api.Controllers.CheckoutController",
+    "Method": "GetMediosPago",
+    "RelativePath": "api/Checkout/medios-pago",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "IdCarro",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Sodimac.Api.Controllers.CheckoutController",
+    "Method": "GetResumen",
+    "RelativePath": "api/Checkout/resumen",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "IdCarro",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Sodimac.Api.Controllers.ConfirmacionController",
+    "Method": "EmitirComprobante",
+    "RelativePath": "api/Confirmacion/comprobante",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "NroOrden",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Sodimac.Api.Controllers.ConfirmacionController",
+    "Method": "EnviarConfirmacion",
+    "RelativePath": "api/Confirmacion/enviar-confirmacion",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Sodimac.Api.Dtos.EnviarConfirmacionRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Sodimac.Api.Controllers.ConfirmacionController",
+    "Method": "RegistrarOrden",
+    "RelativePath": "api/Confirmacion/orden",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Sodimac.Api.Dtos.RegistrarOrdenRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Sodimac.Api.Controllers.EntregaController",
+    "Method": "SeleccionarDespacho",
+    "RelativePath": "api/Entrega/despacho-domicilio",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Sodimac.Api.Dtos.SeleccionarDespachoRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Sodimac.Api.Controllers.EntregaController",
+    "Method": "GetFechasHorarios",
+    "RelativePath": "api/Entrega/fechas-horarios",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "IdCarro",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "IdDireccion",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "IdTipoEntrega",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Sodimac.Api.Controllers.EntregaController",
+    "Method": "SeleccionarRetiroTienda",
+    "RelativePath": "api/Entrega/retiro-tienda",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Sodimac.Api.Dtos.SeleccionarRetiroTiendaRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Sodimac.Api.Controllers.EntregaController",
+    "Method": "GetTiendasRetiro",
+    "RelativePath": "api/Entrega/tiendas-retiro",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "IdCarro",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "IdZona",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Sodimac.Api.Controllers.PagoController",
+    "Method": "PagoEfectivo",
+    "RelativePath": "api/Pago/efectivo",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Sodimac.Api.Dtos.GenerarCodigoPagoEfectivoRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Sodimac.Api.Controllers.PagoController",
+    "Method": "PagarConTarjeta",
+    "RelativePath": "api/Pago/tarjeta",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Sodimac.Api.Dtos.PagarConTarjetaRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  }
+]
