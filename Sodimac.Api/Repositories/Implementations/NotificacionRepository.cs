@@ -1,24 +1,25 @@
 ﻿using Sodimac.Api.Models;
-using Sodimac.Api.Models.Contexts;
+using Sodimac.Api.Data;
 using Sodimac.Api.Repositories.Interfaces;
+using MongoDB.Driver;
 
 namespace Sodimac.Api.Repositories.Implementations
 {
     public class NotificacionRepository : INotificacionRepository
     {
-        private readonly SodimacContext _context;
+        private readonly MongoDataContext _mongo;
         private readonly ILogger<NotificacionRepository> _logger;
 
-        public NotificacionRepository(SodimacContext context, ILogger<NotificacionRepository> logger)
+        public NotificacionRepository(MongoDataContext mongo, ILogger<NotificacionRepository> logger)
         {
-            _context = context;
+            _mongo = mongo;
             _logger = logger;
         }
 
         public async Task<NotificacionCorreo> RegistrarAsync(NotificacionCorreo notificacion)
         {
-            _context.NotificacionCorreos.Add(notificacion);
-            await _context.SaveChangesAsync();
+            notificacion.IdNotificacion = await _mongo.NextIdAsync("notificaciones");
+            await _mongo.Collection<NotificacionCorreo>("notificacionesCorreo").InsertOneAsync(notificacion);
             return notificacion;
         }
 

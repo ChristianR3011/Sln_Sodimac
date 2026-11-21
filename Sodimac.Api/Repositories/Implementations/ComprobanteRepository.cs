@@ -1,41 +1,44 @@
-﻿using Microsoft.EntityFrameworkCore;
+using MongoDB.Driver;
+using Sodimac.Api.Data;
 using Sodimac.Api.Models;
-using Sodimac.Api.Models.Contexts;
 using Sodimac.Api.Repositories.Interfaces;
 
 namespace Sodimac.Api.Repositories.Implementations
 {
     public class ComprobanteRepository : IComprobanteRepository
     {
-        private readonly SodimacContext _context;
+        private readonly MongoDataContext _mongo;
 
-        public ComprobanteRepository(SodimacContext context)
+        public ComprobanteRepository(MongoDataContext mongo)
         {
-            _context = context;
+            _mongo = mongo;
         }
 
         public async Task<Comprobante> CrearAsync(Comprobante comprobante)
         {
-            _context.Comprobantes.Add(comprobante);
-            await _context.SaveChangesAsync();
+            comprobante.IdComprobante = await _mongo.NextIdAsync("comprobantes");
+            await _mongo.Collection<Comprobante>("comprobantes").InsertOneAsync(comprobante);
             return comprobante;
         }
 
         public async Task<Comprobante?> GetByIdCarroAsync(int idCarro)
         {
-            return await _context.Comprobantes.FirstOrDefaultAsync(c => c.IdCarro == idCarro);
+            return await _mongo.Collection<Comprobante>("comprobantes")
+                .Find(certificate => certificate.IdCarro == idCarro)
+                .FirstOrDefaultAsync();
         }
 
         public async Task<Comprobante?> GetByNroOrdenAsync(string nroOrden)
         {
-            return await _context.Comprobantes
-                .FirstOrDefaultAsync(c => c.NroOrden == nroOrden);
+            return await _mongo.Collection<Comprobante>("comprobantes")
+                .Find(certificate => certificate.NroOrden == nroOrden)
+                .FirstOrDefaultAsync();
         }
 
         public async Task ActualizarAsync(Comprobante comprobante)
         {
-            _context.Comprobantes.Update(comprobante);
-            await _context.SaveChangesAsync();
+            await _mongo.Collection<Comprobante>("comprobantes")
+                .ReplaceOneAsync(certificate => certificate.IdComprobante == comprobante.IdComprobante, comprobante);
         }
     }
 }

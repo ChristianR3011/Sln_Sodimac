@@ -1,56 +1,40 @@
-﻿using Microsoft.EntityFrameworkCore;
+using MongoDB.Driver;
+using Sodimac.Api.Data;
 using Sodimac.Api.Models;
-using Sodimac.Api.Models.Contexts;
 using Sodimac.Api.Repositories.Interfaces;
 
 namespace Sodimac.Api.Repositories.Implementations
 {
     public class OrdenRepository : IOrdenRepository
     {
-        private readonly SodimacContext _context;
+        private readonly MongoDataContext _mongo;
 
-        public OrdenRepository(SodimacContext context)
+        public OrdenRepository(MongoDataContext mongo)
         {
-            _context = context;
+            _mongo = mongo;
         }
 
-        public async Task<string> GenerarNumeroOrdenAsync()
-        {
-            var ultimaOrden = await _context.Ordens
-                .Where(o => o.NroOrden.StartsWith("ORD-"))
-                .OrderByDescending(o => o.NroOrden)
-                .FirstOrDefaultAsync();
-
-            int siguienteNumero = 1;
-
-            if (ultimaOrden != null && int.TryParse(ultimaOrden.NroOrden.Replace("ORD-", ""), out int ultimoNumero))
-            {
-                siguienteNumero = ultimoNumero + 1;
-            }
-
-            return $"ORD-{siguienteNumero:D8}";
-        }
+        public async Task<string> GenerarNumeroOrdenAsync() =>
+            $"ORD-{await _mongo.NextIdAsync("ordenes"):D8}";
 
         public async Task<Orden> CrearAsync(Orden orden)
         {
-            _context.Ordens.Add(orden);
-            await _context.SaveChangesAsync();
+            await _mongo.Collection<Orden>("ordenes").InsertOneAsync(orden);
             return orden;
         }
 
         public async Task<Orden?> GetByNroOrdenAsync(string nroOrden)
         {
-            return await _context.Ordens.FindAsync(nroOrden);
+            return await _mongo.Collection<Orden>("ordenes")
+                .Find(order => order.NroOrden == nroOrden)
+                .FirstOrDefaultAsync();
         }
 
         public async Task ActualizarEstadoAsync(string nroOrden, string estado)
         {
-            var orden = await _context.Ordens.FindAsync(nroOrden);
-            if (orden != null)
-            {
-                orden.Estado = estado;
-                await _context.SaveChangesAsync();
-            }
+            await _mongo.Collection<Orden>("ordenes").UpdateOneAsync(
+                order => order.NroOrden == nroOrden,
+                Builders<Orden>.Update.Set(order => order.Estado, estado));
         }
     }
 }

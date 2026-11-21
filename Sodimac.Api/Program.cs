@@ -1,5 +1,4 @@
-using Microsoft.EntityFrameworkCore;
-using Sodimac.Api.Models.Contexts;
+using Sodimac.Api.Data;
 using Sodimac.Api.Repositories.Implementations;
 using Sodimac.Api.Repositories.Interfaces;
 using Sodimac.Api.Services.Implementations;
@@ -21,11 +20,8 @@ builder.Services.AddControllers()
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
-builder.Services.AddDbContext<SodimacContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("conexion")));
+builder.Services.AddSingleton<MongoDataContext>();
 
-
-
-// Program.cs
 builder.Services.AddScoped<IEntregaService, EntregaService>();
 builder.Services.AddScoped<ICheckoutService, CheckoutService>();
 builder.Services.AddScoped<IPagoService, PagoService>();
@@ -44,6 +40,13 @@ builder.Services.AddScoped<INotificacionRepository, NotificacionRepository>();
 
 
 var app = builder.Build();
+
+var mongo = app.Services.GetRequiredService<MongoDataContext>();
+await mongo.PingAsync();
+if (app.Configuration.GetValue<bool>("MongoDB:SeedDemoData"))
+{
+    await MongoDemoDataSeeder.SeedAsync(mongo);
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
