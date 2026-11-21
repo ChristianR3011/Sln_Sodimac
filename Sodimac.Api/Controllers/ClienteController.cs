@@ -15,6 +15,7 @@ namespace Sodimac.Api.Controllers
             _clienteCarroService = clienteCarroService;
         }
 
+        // Obtiene los datos del cliente después de validar su sesión.
         [HttpGet("clientes/{idCliente}")]
         public IActionResult GetCliente(string idCliente)
         {
@@ -26,6 +27,7 @@ namespace Sodimac.Api.Controllers
             return Ok(response);
         }
 
+        // Actualiza los datos personales del cliente después de validar su sesión.
         [HttpPatch("clientes/{idCliente}")]
         public IActionResult ActualizarCliente(string idCliente, [FromBody] ActualizarClienteRequest request)
         {
@@ -37,6 +39,7 @@ namespace Sodimac.Api.Controllers
             return Ok(response);
         }
 
+        // Consulta todas las direcciones registradas para el cliente.
         [HttpGet("clientes/{idCliente}/direcciones")]
         public IActionResult GetDirecciones(string idCliente)
         {
@@ -47,6 +50,7 @@ namespace Sodimac.Api.Controllers
             return Ok(response);
         }
 
+        // Registra una nueva dirección de entrega para el cliente.
         [HttpPost("clientes/{idCliente}/direcciones")]
         public IActionResult RegistrarDireccion(string idCliente, [FromBody] RegistrarDireccionRequest request)
         {
@@ -58,6 +62,7 @@ namespace Sodimac.Api.Controllers
             return StatusCode(StatusCodes.Status201Created, response);
         }
 
+        // Modifica una dirección existente del cliente.
         [HttpPut("clientes/{idCliente}/direcciones/{idDireccion}")]
         public IActionResult ActualizarDireccion(string idCliente, string idDireccion, [FromBody] ActualizarDireccionRequest request)
         {
@@ -69,6 +74,7 @@ namespace Sodimac.Api.Controllers
             return Ok(response);
         }
 
+        // Elimina una dirección registrada según el ID del cliente y el ID de la dirección.
         [HttpDelete("clientes/{idCliente}/direcciones/{idDireccion}")]
         public IActionResult EliminarDireccion(string idCliente, string idDireccion)
         {
@@ -80,6 +86,7 @@ namespace Sodimac.Api.Controllers
             return NoContent();
         }
 
+        // Crea una sesión para el cliente y devuelve el token de autorización generado.
         [HttpPost("sesiones")]
         public IActionResult CrearSesion([FromBody] Dictionary<string, string> payload)
         {
