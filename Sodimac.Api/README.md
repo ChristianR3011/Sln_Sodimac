@@ -28,6 +28,6 @@ Rutas de prueba:
 
 El archivo SQL proporcionado contiene la definición de tablas, pero no filas
 para importar. Los datos demo cubren las rutas actuales de checkout, pagos y
-entregas; no representan una migración de registros SQL existentes. Las rutas
-de cuenta y carrito implementadas por `ClienteCarroService` siguen usando su
-almacenamiento en memoria.
+entregas; no representan una migración de registros SQL existentes. Los datos
+del perfil del cliente y del carrito siguen usando almacenamiento en memoria;
+las direcciones se guardan en la colección MongoDB `direcciones`.

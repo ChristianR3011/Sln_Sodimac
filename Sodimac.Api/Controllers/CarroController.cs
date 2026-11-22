@@ -17,61 +17,61 @@ namespace Sodimac.Api.Controllers
 
         // Agrega un producto al carro de compras identificado por el ID recibido.
         [HttpPost("carros/{idCarro}/items")]
-        public IActionResult AgregarProducto(string idCarro, [FromBody] ProductoCarroRequest request)
+        public async Task<IActionResult> AgregarProducto(string idCarro, [FromBody] ProductoCarroRequest request)
         {
-            var response = _clienteCarroService.AgregarProducto(idCarro, request);
+            var response = await _clienteCarroService.AgregarProductoAsync(idCarro, request);
             if (!response.Success) return BadRequest(response);
             return StatusCode(StatusCodes.Status201Created, response);
         }
 
         // Consulta los datos y productos del carro, opcionalmente usando una zona de entrega.
         [HttpGet("carros/{idCarro}")]
-        public IActionResult GetCarro(string idCarro, [FromQuery] string? idZona = "Lima")
+        public async Task<IActionResult> GetCarro(string idCarro, [FromQuery] string? idZona = "Lima")
         {
-            var response = _clienteCarroService.GetCarro(idCarro, idZona);
+            var response = await _clienteCarroService.GetCarroAsync(idCarro, idZona);
             if (!response.Success) return NotFound(response);
             return Ok(response);
         }
 
         // Actualiza la cantidad de un producto existente dentro del carro.
         [HttpPatch("carros/{idCarro}/items/{sku}")]
-        public IActionResult ActualizarCantidad(string idCarro, string sku, [FromBody] ActualizarCantidadItemRequest request)
+        public async Task<IActionResult> ActualizarCantidad(string idCarro, string sku, [FromBody] ActualizarCantidadItemRequest request)
         {
-            var response = _clienteCarroService.ActualizarCantidad(idCarro, sku, request);
+            var response = await _clienteCarroService.ActualizarCantidadAsync(idCarro, sku, request);
             if (!response.Success) return BadRequest(response);
             return Ok(response);
         }
 
         // Elimina un producto del carro según el ID del carro y el SKU recibido.
         [HttpDelete("carros/{idCarro}/items/{sku}")]
-        public IActionResult EliminarProducto(string idCarro, string sku)
+        public async Task<IActionResult> EliminarProducto(string idCarro, string sku)
         {
-            var response = _clienteCarroService.EliminarProducto(idCarro, sku);
+            var response = await _clienteCarroService.EliminarProductoAsync(idCarro, sku);
             if (!response.Success) return NotFound(response);
             return Ok(response);
         }
 
         // Agrega un servicio adicional a un producto específico del carro.
         [HttpPost("carros/{idCarro}/items/{sku}/servicios")]
-        public IActionResult AgregarServicio(string idCarro, string sku, [FromBody] AgregarServicioRequest request)
+        public async Task<IActionResult> AgregarServicio(string idCarro, string sku, [FromBody] AgregarServicioRequest request)
         {
-            var response = _clienteCarroService.AgregarServicio(idCarro, sku, request);
+            var response = await _clienteCarroService.AgregarServicioAsync(idCarro, sku, request);
             if (!response.Success) return BadRequest(response);
             return StatusCode(StatusCodes.Status201Created, response);
         }
 
         // Valida y aplica un cupón de descuento al carro de compras.
         [HttpPost("carros/{idCarro}/cupones")]
-        public IActionResult AplicarCupon(string idCarro, [FromBody] CuponRequest request)
+        public async Task<IActionResult> AplicarCupon(string idCarro, [FromBody] CuponRequest request)
         {
-            var response = _clienteCarroService.AplicarCupon(idCarro, request);
+            var response = await _clienteCarroService.AplicarCuponAsync(idCarro, request);
             if (!response.Success) return BadRequest(response);
             return Ok(response);
         }
 
         // Fusiona el carro de invitado con el carro del cliente después de validar su sesión.
         [HttpPost("carros/fusion")]
-        public IActionResult FusionarCarro([FromBody] FusionCarroRequest request)
+        public async Task<IActionResult> FusionarCarro([FromBody] FusionCarroRequest request)
         {
             var authHeader = Request.Headers.Authorization.ToString();
             var idCliente = Request.Headers["X-Cliente-Id"].ToString();
@@ -80,10 +80,10 @@ namespace Sodimac.Api.Controllers
                 return Unauthorized(new { message = "Debe indicar el cliente en el header X-Cliente-Id" });
             }
 
-            if (!_clienteCarroService.TieneSesionValida(authHeader, idCliente))
+            if (!await _clienteCarroService.TieneSesionValidaAsync(authHeader, idCliente))
                 return Unauthorized(new { message = "Sesión no iniciada o token inválido" });
 
-            var response = _clienteCarroService.FusionarCarro(idCliente, request);
+            var response = await _clienteCarroService.FusionarCarroAsync(idCliente, request);
             if (!response.Success) return BadRequest(response);
             return Ok(response);
         }

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Sodimac.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4475dc7bb1b6e42e6df2137ae6a70422aec38fc9")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e1a7234d0d8bdb4fb8db6c20f1964d8dfa065553")]
 [assembly: System.Reflection.AssemblyProductAttribute("Sodimac.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Sodimac.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

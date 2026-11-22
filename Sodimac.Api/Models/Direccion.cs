@@ -31,6 +31,12 @@ public partial class Direccion
     [StringLength(150)]
     public string Direccion1 { get; set; } = null!;
 
+    public string? DepartamentoNombre { get; set; }
+
+    public string? ProvinciaNombre { get; set; }
+
+    public string? DistritoNombre { get; set; }
+
     [Column("referencia")]
     [StringLength(150)]
     public string? Referencia { get; set; }

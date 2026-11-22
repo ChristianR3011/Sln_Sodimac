@@ -9,6 +9,24 @@ public static class MongoDemoDataSeeder
     public static async Task SeedAsync(MongoDataContext mongo)
     {
         await SeedIfMissingAsync(
+            mongo.Collection<Cliente>("clientes"),
+            1,
+            new Cliente
+            {
+                IdCliente = 1,
+                TipoDocumento = "DNI",
+                NroDocumento = "12345678",
+                Nombres = "Ana",
+                Apellidos = "Pérez",
+                Correo = "ana@demo.com",
+                Celular = "999999999",
+                ContrasenaHash = "xTfuIav5CfGdE+PbvrDhF/yT106rGUuf4abcWzN8Qx4=",
+                AceptoTerminos = true,
+                IntentosFallidos = 0,
+                FechaRegistro = DateTime.UtcNow
+            });
+
+        await SeedIfMissingAsync(
             mongo.Collection<Carro>("carros"),
             1,
             new Carro
@@ -71,8 +89,21 @@ public static class MongoDemoDataSeeder
                 Nombre = "Casa",
                 Direccion1 = "Av. Demo 123",
                 Referencia = "Dato de prueba",
+                DepartamentoNombre = "Lima",
+                ProvinciaNombre = "Lima",
+                DistritoNombre = "Miraflores",
                 Principal = true
             });
+        await mongo.Collection<Direccion>("direcciones").UpdateOneAsync(
+            Builders<Direccion>.Filter.Eq(d => d.IdDireccion, 1)
+                & Builders<Direccion>.Filter.Eq(d => d.DepartamentoNombre, null)
+                & Builders<Direccion>.Filter.Eq(d => d.ProvinciaNombre, null)
+                & Builders<Direccion>.Filter.Eq(d => d.DistritoNombre, null),
+            Builders<Direccion>.Update
+                .Set(d => d.DepartamentoNombre, "Lima")
+                .Set(d => d.ProvinciaNombre, "Lima")
+                .Set(d => d.DistritoNombre, "Miraflores"));
+
         await SeedIfMissingAsync(
             mongo.Collection<HorarioDespacho>("horariosDespacho"),
             1,
@@ -112,6 +143,13 @@ public static class MongoDemoDataSeeder
                 TiempoRetiroMin = 120
             });
         }
+
+        var maxDireccionId = await mongo.Collection<Direccion>("direcciones")
+            .Find(Builders<Direccion>.Filter.Empty)
+            .SortByDescending(d => d.IdDireccion)
+            .Project(d => d.IdDireccion)
+            .FirstOrDefaultAsync();
+        await mongo.InitializeSequenceAsync("direcciones", maxDireccionId);
 
         await mongo.InitializeSequenceAsync("pagos", 0);
         await mongo.InitializeSequenceAsync("entregas", 0);

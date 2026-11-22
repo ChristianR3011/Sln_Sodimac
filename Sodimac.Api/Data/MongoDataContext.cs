@@ -51,7 +51,7 @@ public sealed class MongoDataContext
     {
         await _sequences.UpdateOneAsync(
             Builders<BsonDocument>.Filter.Eq("_id", sequenceName),
-            Builders<BsonDocument>.Update.SetOnInsert("value", initialValue),
+            Builders<BsonDocument>.Update.Max("value", initialValue),
             new UpdateOptions { IsUpsert = true });
     }
 
@@ -70,6 +70,8 @@ public sealed class MongoDataContext
         RegisterEntity<Orden>(nameof(Orden.NroOrden));
         RegisterEntity<Comprobante>(nameof(Comprobante.IdComprobante));
         RegisterEntity<NotificacionCorreo>(nameof(NotificacionCorreo.IdNotificacion));
+        RegisterEntity<Cliente>(nameof(Cliente.IdCliente));
+        RegisterEntity<Sesion>(nameof(Sesion.IdSesion));
         RegisterEntity<Direccion>(nameof(Direccion.IdDireccion));
         RegisterEntity<Zona>(nameof(Zona.IdZona));
         RegisterEntity<HorarioDespacho>(nameof(HorarioDespacho.IdHorario));
